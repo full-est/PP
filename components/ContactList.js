@@ -9,21 +9,25 @@ const ContactList = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredContacts = contacts.filter(contact =>
-    (contact.name || '').toLowerCase().includes(searchQuery.toLowerCase())
+    (contact.name || contact.email || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const sortedContacts = filteredContacts
   .sort((a, b) => {
-    if (!a.name) return 1;
-    if (!b.name) return -1;
-    return a.name.localeCompare(b.name);
+    const aName = a.name || a.email || a.phone || '';  
+      const bName = b.name || b.email || b.phone || '';
+    return aName.localeCompare(bName);
   })
   .reduce((acc, contact) => {
-    const firstLetter = contact.name ? contact.name[0].toUpperCase() : '#';
-    if (!acc[firstLetter]) {
-      acc[firstLetter] = [];
+    const firstLetter = (contact.name || contact.email || contact.phone || '')[0]?.toUpperCase() || '#';
+
+    const isNumber = !isNaN(firstLetter);
+      const sectionKey = isNumber ? '#' : firstLetter;
+
+    if (!acc[sectionKey]) {
+      acc[sectionKey] = [];
     }
-    acc[firstLetter].push(contact);
+    acc[sectionKey].push(contact);
     return acc;
   }, {});
 

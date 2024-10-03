@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const ContactCard = ({ contact, onPress }) => {
 
-  const displayName = contact.name || contact.email || '';
+  const displayName = contact.name || contact.email || contact.phone || '';
 
   return (
     <TouchableOpacity style={styles.card} onPress={() => onPress(contact)}>
