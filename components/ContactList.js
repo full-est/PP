@@ -9,13 +9,17 @@ const ContactList = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase())
+    (contact.name || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const sortedContacts = filteredContacts
-  .sort((a, b) => a.name.localeCompare(b.name))
+  .sort((a, b) => {
+    if (!a.name) return 1;
+    if (!b.name) return -1;
+    return a.name.localeCompare(b.name);
+  })
   .reduce((acc, contact) => {
-    const firstLetter = contact.name[0].toUpperCase();
+    const firstLetter = contact.name ? contact.name[0].toUpperCase() : '#';
     if (!acc[firstLetter]) {
       acc[firstLetter] = [];
     }
@@ -23,7 +27,12 @@ const ContactList = ({ navigation }) => {
     return acc;
   }, {});
 
-const sections = Object.keys(sortedContacts).sort().map(letter => ({
+const sections = Object.keys(sortedContacts).sort((a, b) => {
+  if (a === '#') return 1;
+  if (b === '#') return -1;
+  return a.localeCompare(b);
+  })
+  .map(letter => ({
   title: letter,
   data: sortedContacts[letter],
 }));

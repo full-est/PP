@@ -9,7 +9,16 @@ const ContactForm = ({ route, navigation }) => {
   const [phone, setPhone] = useState(contact ? contact.phone : '');
 
   const handleSave = () => {
-    const newContact = { id: contact ? contact.id : Date.now().toString(), name, phone };
+    if (!name && !phone) {
+      Alert.alert('Ошибка', 'Имя или телефон должны быть заполнены.');
+      return;
+    }
+
+    const newContact = { 
+      id: contact ? contact.id : Date.now().toString(), 
+      name: name || '',
+      phone 
+    };
     
     if (contact) {
       updateContact(newContact);
