@@ -21,7 +21,7 @@ const Navigation = () => {
         <Stack.Screen 
         name="ContactDetails" 
         component={ContactDetails} 
-        options={{ title: 'Детали контакта' }} />
+        options={{ title: '' }} />
         <Stack.Screen 
         name="ContactForm"
         component={ContactForm} 

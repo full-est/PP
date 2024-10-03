@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useContacts } from './ContactContext';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { TextInput } from 'react-native-gesture-handler';
 
 const ContactDetails = ({ route, navigation }) => {
   const { contact } = route.params;
   const { updateContact, deleteContact, contacts } = useContacts();
 
   const [currentContact, setCurrentContact] = useState(contact);
+  const [notes, setNotes] = useState(contact.notes || '');
 
   useEffect(() => {
     const updatedContact = contacts.find(c => c.id === contact.id);
     if (updatedContact) {
       setCurrentContact(updatedContact);
+      setNotes(updatedContact.notes || '');
     }
   }, [contacts]);
 
@@ -37,6 +41,7 @@ const ContactDetails = ({ route, navigation }) => {
   };
 
     const handleCall = () => {
+      if (!currentContact.phone) return;
       const updatedContact = { ...currentContact, lastCalled: new Date().toISOString() };
       updateContact(updatedContact);
       Alert.alert('Звонок', `"Позвонили" на номер ${currentContact.phone}`);
@@ -46,84 +51,171 @@ const ContactDetails = ({ route, navigation }) => {
       updateContact(updatedContact);
   };
 
+  const handleNotesChange = (text) => {
+    setNotes(text);
+    const updatedContact = { ...currentContact, notes: text };
+    updateContact(updatedContact);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Информация о контакте</Text>
-      <Text style={styles.label}>Имя: {currentContact.name}</Text>
-      <Text style={styles.label}>Телефон: {currentContact.phone}</Text>
-      <Text style={styles.label}>Email: {currentContact.email}</Text>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.container}>
+        <View style={styles.center}>
+        <Text style={styles.contactName}>{currentContact.name}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ContactForm', { contact: currentContact })}>
+          <Text style={styles.editButton}>Править</Text>
+        </TouchableOpacity>
+        </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('ContactForm', { contact: currentContact })}
-      >
-        <Text style={styles.buttonText}>Редактировать</Text>
-      </TouchableOpacity>
+        <View style={styles.actionButtons}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert('Сообщение')}>
+          <Icon name="chatbubble-outline" size={24} color="#FFFFFF" />
+          <Text style={styles.actionText}>Написать</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton} onPress={handleCall}>
+          <Icon name="call-outline" size={24} color="#FFFFFF" />
+          <Text style={styles.actionText}>Сотовый</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert('Видео')}>
+          <Icon name="videocam-outline" size={24} color="#FFFFFF" />
+          <Text style={styles.actionText}>Видео</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert('Почта')}>
+          <Icon name="mail-outline" size={24} color="#FFFFFF" />
+          <Text style={styles.actionTextInactive}>Почта</Text>
+        </TouchableOpacity>
+      </View>
 
-      <TouchableOpacity
-        style={styles.callButton}
-        onPress={handleCall}
-      >
-        <Text style={styles.buttonText}>Вызов</Text>
-      </TouchableOpacity>
+        <View style={styles.contactInfo}>
+        <Text style={styles.infoLabel}>Телефон</Text>
+        <Text style={styles.infoText}>{currentContact.phone}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.favoriteButton}
-        onPress={handleFavorite}
-      >
+      {currentContact.email && (
+        <View style={styles.contactInfo}>
+          <Text style={styles.infoLabel}>Email</Text>
+          <Text style={styles.infoText}>{currentContact.email}</Text>
+        </View>
+      )}
+
+      <View>
+        <TextInput  style={styles.notesInput}
+          multiline={true}
+          value={notes}
+          onChangeText={handleNotesChange}
+          placeholder="Заметки...."
+          placeholderTextColor="#8E8E93"/>
+      </View>
+
+      <TouchableOpacity style={styles.favoriteButton} onPress={handleFavorite}>
         <Text style={styles.buttonText}>
           {currentContact.isFavorite ? 'Удалить из избранного' : 'Добавить в избранные'}
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={handleDelete}
-      >
+      <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
         <Text style={styles.buttonText}>Удалить</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+  },
   container: {
     flex: 1,
-    padding: 16,
+    backgroundColor: '#1C1C1E',
+    paddingHorizontal: 16,
+    paddingTop: 32,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
   },
-  label: {
-    fontSize: 18,
-    marginBottom: 8,
-  },
-  button: {
-    backgroundColor: '#007bff',
-    padding: 16,
-    borderRadius: 8,
-    marginTop: 20,
+  center: {
     alignItems: 'center',
+    marginBottom: 20,
+  },
+  contactName: {
+    fontSize: 28,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 10,
+  },
+  editButton: {
+    color: '#007AFF',
+    fontSize: 18,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+  },
+  actionButton: {
+    alignItems: 'center',
+  },
+  actionText: {
+    color: '#FFFFFF',
+    marginTop: 5,
+    fontSize: 12,
+  },
+  actionTextInactive: {
+    color: '#A9A9A9',
+    marginTop: 5,
+    fontSize: 12,
+  },
+  contactInfo: {
+    backgroundColor: '#2C2C2E',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: -10,
+    marginTop: 20,
+  },
+  infoLabel: {
+    color: '#8E8E93',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  infoText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+  },
+  favoriteButton: {
+    backgroundColor: '#FF9500',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    marginTop: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   deleteButton: {
-    backgroundColor: 'red',
-    padding: 16,
-    borderRadius: 8,
-    marginTop: 10,
+    backgroundColor: '#FF3B30',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    marginVertical: 10,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#FFFFFF',
   },
-  callButton: {
-    backgroundColor: '#28a745',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 10,
+  notesInput: {
+    backgroundColor: '#2C2C2E',
+    color: '#FFFFFF',
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 16,
+    minHeight: 70,
+    marginTop: 20,
   },
 });
 
