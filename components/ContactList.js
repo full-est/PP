@@ -59,6 +59,14 @@ const sections = Object.keys(sortedContacts).sort((a, b) => {
           </View>
         )}
       />
+
+<TouchableOpacity
+        style={styles.recentButton}
+        onPress={() => navigation.navigate('RecentCalls')}
+      >
+        <Text style={styles.recentButtonText}>Недавние вызовы</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate('ContactForm')}

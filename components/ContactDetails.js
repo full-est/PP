@@ -36,6 +36,12 @@ const ContactDetails = ({ route, navigation }) => {
     );
   };
 
+    const handleCall = () => {
+      const updatedContact = { ...currentContact, lastCalled: new Date().toISOString() };
+      updateContact(updatedContact);
+      Alert.alert('Звонок', `"Позвонили" на номер ${currentContact.phone}`);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Информация о контакте</Text>
@@ -48,6 +54,13 @@ const ContactDetails = ({ route, navigation }) => {
         onPress={() => navigation.navigate('ContactForm', { contact: currentContact })}
       >
         <Text style={styles.buttonText}>Редактировать</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.callButton}
+        onPress={handleCall}
+      >
+        <Text style={styles.buttonText}>Вызов</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -68,10 +81,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
   label: {
     fontSize: 18,
-    marginVertical: 10,
+    marginBottom: 8,
   },
   button: {
     backgroundColor: '#007bff',
@@ -90,6 +104,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  callButton: {
+    backgroundColor: '#28a745',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
   },
 });
 
