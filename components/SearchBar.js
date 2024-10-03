@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 const SearchBar = ({ searchQuery, setSearchQuery, placeholder = 'Поиск...' }) => {
   return (
@@ -10,21 +10,34 @@ const SearchBar = ({ searchQuery, setSearchQuery, placeholder = 'Поиск...' 
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
+      {searchQuery.length > 0 && (
+        <TouchableOpacity onPress={() => setSearchQuery('')} style={styles.clearButton}>
+          <Text style={styles.clearButtonText}>✕</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
   },
   input: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
+    flex: 1,
+    paddingVertical: 8,
+  },
+  clearButton: {
+    padding: 8,
+  },
+  clearButtonText: {
     fontSize: 16,
+    color: 'gray',
   },
 });
 

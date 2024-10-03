@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, SectionList, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import ContactCard from './ContactCard';
 import SearchBar from './SearchBar';
 import { useContacts } from './ContactContext';
@@ -12,17 +12,38 @@ const ContactList = ({ navigation }) => {
     contact.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const sortedContacts = filteredContacts
+  .sort((a, b) => a.name.localeCompare(b.name))
+  .reduce((acc, contact) => {
+    const firstLetter = contact.name[0].toUpperCase();
+    if (!acc[firstLetter]) {
+      acc[firstLetter] = [];
+    }
+    acc[firstLetter].push(contact);
+    return acc;
+  }, {});
+
+const sections = Object.keys(sortedContacts).sort().map(letter => ({
+  title: letter,
+  data: sortedContacts[letter],
+}));
+
   return (
     <View style={styles.container}>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <FlatList
-        data={filteredContacts}
+      <SectionList
+        sections={sections}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <ContactCard
             contact={item}
             onPress={() => navigation.navigate('ContactDetails', { contact: item })}
           />
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionHeaderText}>{title}</Text>
+          </View>
         )}
       />
       <TouchableOpacity
@@ -50,6 +71,15 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  sectionHeader: {
+    backgroundColor: '#f7f7f7',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  sectionHeaderText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
