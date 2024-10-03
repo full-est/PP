@@ -60,11 +60,18 @@ const sections = Object.keys(sortedContacts).sort((a, b) => {
         )}
       />
 
-<TouchableOpacity
+      <TouchableOpacity
         style={styles.recentButton}
         onPress={() => navigation.navigate('RecentCalls')}
       >
         <Text style={styles.recentButtonText}>Недавние вызовы</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('FavoriteContacts')}
+      >
+        <Text style={styles.buttonText}>Избранные</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

@@ -41,6 +41,10 @@ const ContactDetails = ({ route, navigation }) => {
       updateContact(updatedContact);
       Alert.alert('Звонок', `"Позвонили" на номер ${currentContact.phone}`);
   };
+    const handleFavorite = () => {
+      const updatedContact = { ...currentContact, isFavorite: !currentContact.isFavorite };
+      updateContact(updatedContact);
+  };
 
   return (
     <View style={styles.container}>
@@ -64,6 +68,15 @@ const ContactDetails = ({ route, navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
+        style={styles.favoriteButton}
+        onPress={handleFavorite}
+      >
+        <Text style={styles.buttonText}>
+          {currentContact.isFavorite ? 'Удалить из избранного' : 'Добавить в избранные'}
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
         style={styles.deleteButton}
         onPress={handleDelete}
       >
@@ -71,7 +84,7 @@ const ContactDetails = ({ route, navigation }) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

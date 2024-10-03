@@ -5,6 +5,7 @@ import ContactList from './ContactList';
 import ContactDetails from './ContactDetails';
 import ContactForm from './ContactForm';
 import RecentCalls from './RecentCalls';
+import FavoriteContacts from './FavoriteContacts'
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,10 @@ const Navigation = () => {
         name="RecentCalls" 
         component={RecentCalls} 
         options={{ title: 'Недавние' }} />
+        <Stack.Screen 
+        name="FavoriteContacts" 
+        component={FavoriteContacts} 
+        options={{ title: 'Избранные' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
