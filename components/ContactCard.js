@@ -2,10 +2,13 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const ContactCard = ({ contact, onPress }) => {
+
+  const displayName = contact.name || contact.email || '';
+
   return (
     <TouchableOpacity style={styles.card} onPress={() => onPress(contact)}>
       <View style={styles.cardContent}>
-        <Text style={styles.name}>{contact.name}</Text>
+        <Text style={styles.name}>{displayName}</Text>
         <Text style={styles.phone}>{contact.phone}</Text>
       </View>
     </TouchableOpacity>

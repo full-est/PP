@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useContacts } from './ContactContext';
 
 const ContactForm = ({ route, navigation }) => {
@@ -7,17 +7,19 @@ const ContactForm = ({ route, navigation }) => {
   const { addContact, updateContact } = useContacts();
   const [name, setName] = useState(contact ? contact.name : '');
   const [phone, setPhone] = useState(contact ? contact.phone : '');
+  const [email, setEmail] = useState(contact ? contact.email : '');
 
   const handleSave = () => {
-    if (!name && !phone) {
-      Alert.alert('Ошибка', 'Имя или телефон должны быть заполнены.');
+    if (!name && !phone && !email) {
+      Alert.alert('Ошибка', 'Имя, телефон или email должны быть заполнены.');
       return;
     }
 
     const newContact = { 
       id: contact ? contact.id : Date.now().toString(), 
       name: name || '',
-      phone 
+      phone: phone || '',
+      email
     };
     
     if (contact) {
@@ -31,20 +33,49 @@ const ContactForm = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{contact ? 'Редактировать контакт' : 'Добавить контакт'}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Имя"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Телефон"
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Имя"
+          value={name}
+          onChangeText={setName}
+        />
+        {name.length > 0 && (
+          <TouchableOpacity onPress={() => setName('')} style={styles.clearButton}>
+            <Text style={styles.clearText}>✖</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Телефон"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+        />
+        {phone.length > 0 && (
+          <TouchableOpacity onPress={() => setPhone('')} style={styles.clearButton}>
+            <Text style={styles.clearText}>✖</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+        />
+        {email.length > 0 && (
+          <TouchableOpacity onPress={() => setEmail('')} style={styles.clearButton}>
+            <Text style={styles.clearText}>✖</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text style={styles.buttonText}>{contact ? 'Сохранить' : 'Добавить'}</Text>
       </TouchableOpacity>
@@ -77,6 +108,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  clearButton: {
+    marginLeft: 10,
+  },
+  clearText: {
+    fontSize: 18,
+    color: 'red',
   },
 });
 

@@ -41,6 +41,7 @@ const ContactDetails = ({ route, navigation }) => {
       <Text style={styles.title}>Информация о контакте</Text>
       <Text style={styles.label}>Имя: {currentContact.name}</Text>
       <Text style={styles.label}>Телефон: {currentContact.phone}</Text>
+      <Text style={styles.label}>Email: {currentContact.email}</Text>
 
       <TouchableOpacity
         style={styles.button}
