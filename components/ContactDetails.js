@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, SafeAreaView } from 'react-native';
 import { useContacts } from './ContactContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextInput } from 'react-native-gesture-handler';
@@ -58,7 +58,9 @@ const ContactDetails = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}
+    showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.center}>
         <Text style={styles.contactName}>{currentContact.name}</Text>
@@ -69,20 +71,20 @@ const ContactDetails = ({ route, navigation }) => {
 
         <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert('Сообщение')}>
-          <Icon name="chatbubble-outline" size={24} color="#FFFFFF" />
+          <Icon name="chatbubble-outline" size={24} color="#black" />
           <Text style={styles.actionText}>Написать</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={handleCall}>
-          <Icon name="call-outline" size={24} color="#FFFFFF" />
+          <Icon name="call-outline" size={24} color="#black" />
           <Text style={styles.actionText}>Сотовый</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert('Видео')}>
-          <Icon name="videocam-outline" size={24} color="#FFFFFF" />
+          <Icon name="videocam-outline" size={24} color="#black" />
           <Text style={styles.actionText}>Видео</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert('Почта')}>
-          <Icon name="mail-outline" size={24} color="#FFFFFF" />
-          <Text style={styles.actionTextInactive}>Почта</Text>
+          <Icon name="mail-outline" size={24} color="#black" />
+          <Text style={styles.actionText}>Почта</Text>
         </TouchableOpacity>
       </View>
 
@@ -104,7 +106,7 @@ const ContactDetails = ({ route, navigation }) => {
           value={notes}
           onChangeText={handleNotesChange}
           placeholder="Заметки...."
-          placeholderTextColor="#8E8E93"/>
+          placeholderTextColor="black"/>
       </View>
 
       <TouchableOpacity style={styles.favoriteButton} onPress={handleFavorite}>
@@ -114,10 +116,11 @@ const ContactDetails = ({ route, navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-        <Text style={styles.buttonText}>Удалить</Text>
+        <Text style={styles.deleteButtonText}>Удалить</Text>
       </TouchableOpacity>
     </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -128,8 +131,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
-    paddingHorizontal: 16,
+    backgroundColor: '#DCDCDC',
+    paddingHorizontal: 10,
     paddingTop: 32,
   },
   header: {
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
   contactName: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: 'black',
     marginBottom: 10,
   },
   editButton: {
@@ -160,17 +163,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actionText: {
-    color: '#FFFFFF',
-    marginTop: 5,
-    fontSize: 12,
-  },
-  actionTextInactive: {
-    color: '#A9A9A9',
+    color: '#808080',
     marginTop: 5,
     fontSize: 12,
   },
   contactInfo: {
-    backgroundColor: '#2C2C2E',
+    backgroundColor: '#ffffff',
     padding: 16,
     borderRadius: 10,
     marginBottom: -10,
@@ -182,35 +180,41 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   infoText: {
-    color: '#FFFFFF',
+    color: '#007AFF',
     fontSize: 18,
   },
   favoriteButton: {
-    backgroundColor: '#FF9500',
+    backgroundColor: '#ffffff',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 10,
-    marginTop: 200,
+    marginTop: 100,
     alignItems: 'center',
     justifyContent: 'center',
   },
   deleteButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: '#ffffff',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 10,
     marginVertical: 10,
+    marginBottom: 100,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  deleteButtonText:{
+    fontSize: 18,
+    fontWeight: '500',
+    color: 'red',
   },
   buttonText: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#FFFFFF',
+    color: '#007AFF',
   },
   notesInput: {
-    backgroundColor: '#2C2C2E',
-    color: '#FFFFFF',
+    backgroundColor: '#ffffff',
+    color: 'black',
     borderRadius: 10,
     padding: 10,
     fontSize: 16,

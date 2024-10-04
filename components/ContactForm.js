@@ -39,6 +39,7 @@ const ContactForm = ({ route, navigation }) => {
           placeholder="Имя"
           value={name}
           onChangeText={setName}
+          placeholderTextColor="#AAB0B6"
         />
         {name.length > 0 && (
           <TouchableOpacity onPress={() => setName('')} style={styles.clearButton}>
@@ -54,6 +55,7 @@ const ContactForm = ({ route, navigation }) => {
           value={phone}
           onChangeText={setPhone}
           keyboardType="phone-pad"
+          placeholderTextColor="#AAB0B6"
         />
         {phone.length > 0 && (
           <TouchableOpacity onPress={() => setPhone('')} style={styles.clearButton}>
@@ -68,6 +70,7 @@ const ContactForm = ({ route, navigation }) => {
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
+          placeholderTextColor="#AAB0B6"
         />
         {email.length > 0 && (
           <TouchableOpacity onPress={() => setEmail('')} style={styles.clearButton}>
@@ -86,40 +89,47 @@ const ContactForm = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 20,
+    backgroundColor: '#dcdcdc',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
+  inputContainer: {
+    position: 'relative',
     marginBottom: 20,
   },
+  input: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    paddingLeft: 20,
+    borderRadius: 10,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+  },
+  clearButton: {
+    position: 'absolute',
+    right: 15,
+    top: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#E5E5EA',
+  },
+  clearText: {
+    fontSize: 14,
+    color: '#333',
+  },
   button: {
-    backgroundColor: '#007bff',
-    padding: 16,
-    borderRadius: 8,
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  clearButton: {
-    marginLeft: 10,
-  },
-  clearText: {
+    color: '#FFFFFF',
     fontSize: 18,
-    color: 'red',
+    fontWeight: '600',
   },
 });
 

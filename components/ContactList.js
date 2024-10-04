@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, SectionList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'
 import ContactCard from './ContactCard';
 import SearchBar from './SearchBar';
 import { useContacts } from './ContactContext';
@@ -59,27 +60,6 @@ const sections = Object.keys(sortedContacts).sort((a, b) => {
           </View>
         )}
       />
-
-      <TouchableOpacity
-        style={styles.recentButton}
-        onPress={() => navigation.navigate('RecentCalls')}
-      >
-        <Text style={styles.recentButtonText}>Недавние вызовы</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('FavoriteContacts')}
-      >
-        <Text style={styles.buttonText}>Избранные</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => navigation.navigate('ContactForm')}
-      >
-        <Text style={styles.addButtonText}>Добавить контакт</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -88,17 +68,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  addButton: {
-    backgroundColor: '#007bff',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 16,
   },
   sectionHeader: {
     backgroundColor: '#f7f7f7',
