@@ -14,6 +14,7 @@ const RecentCalls = ({ navigation }) => {
     <View style={styles.container}>
       {recentCalls.length ? (
         <FlatList
+        showsVerticalScrollIndicator={false}
           data={recentCalls}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (

@@ -47,6 +47,7 @@ const sections = Object.keys(sortedContacts).sort((a, b) => {
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <SectionList
         sections={sections}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <ContactCard

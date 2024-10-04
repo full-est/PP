@@ -14,6 +14,7 @@ const FavoriteContacts = ({ navigation }) => {
         <Text style={styles.emptyText}>Нет избранных контактов</Text>
       ) : (
         <FlatList
+        showsVerticalScrollIndicator={false}
           data={favoriteContacts}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
